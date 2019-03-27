@@ -12,7 +12,11 @@ namespace Nexus.Core.Entities
 
         public string Name { get; set; }
 
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
         public virtual Client Client { get; set; }
+
+        public virtual ICollection<StorePlace> StorePlaces { get; set; }
+
+        public virtual ICollection<MarketingActivityStore> MarketingActivityStores { get; set; }
     }
 }

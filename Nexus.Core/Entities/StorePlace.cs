@@ -12,7 +12,9 @@ namespace Nexus.Core.Entities
 
         public string Name { get; set; }
 
-        public int StoreId { get; set; }
+        public int? StoreId { get; set; }
         public virtual Store Store { get; set; }
+
+        public virtual ICollection<MarketingActivityStorePlace> MarketingActivityStorePlaces { get; set; }
     }
 }

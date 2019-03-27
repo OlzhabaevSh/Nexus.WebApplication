@@ -10,10 +10,10 @@ namespace Nexus.Core.Entities
     {
         public int Id { get; set; }
 
-        public int MarketingActivityId { get; set; }
+        public int? MarketingActivityId { get; set; }
         public virtual MarketingActivity MarketingActivity { get; set; }
 
-        public int StoreId { get; set; }
+        public int? StoreId { get; set; }
         public virtual Store Store { get; set; }
     }
 }

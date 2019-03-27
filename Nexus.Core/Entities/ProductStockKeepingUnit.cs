@@ -11,5 +11,9 @@ namespace Nexus.Core.Entities
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public virtual ICollection<ProductLink> ProductLinks { get; set; }
+
+        public virtual ICollection<MarketingActivityProduct> MarketingActivityProducts { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Nexus_WebApplication</title>
+    <title>Nexus</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
     @Styles.Render("~/Content/bundle")
@@ -28,13 +28,27 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">Nexus_WebApplication</a>
+                <a class="navbar-brand" href="/">Nexus | Marketing Management System</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Dictionaries <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/Dictionaries/Index?entityName=ActivityStatus">Activity Status</a></li>
+                            <li><a href="/Dictionaries/Index?entityName=ActivityType">Activity Status</a></li>
+                            <li><a href="/Dictionaries/Index?entityName=Client">Client</a></li>
+                            <li><a href="/Dictionaries/Index?entityName=ProductBrand">Product Brand</a></li>
+                            <li><a href="/Dictionaries/Index?entityName=ProductCategory">Product Category</a></li>
+                            <li><a href="/Dictionaries/Index?entityName=ProductLine">Product Line</a></li>
+                            <li><a href="/Dictionaries/Index?entityName=ProductLink">Product Link</a></li>
+                            <li><a href="/Dictionaries/Index?entityName=ProductStockKeepingUnit">Product Stock Keeping Unit</a></li>
+                            <li><a href="/Dictionaries/Index?entityName=Store">Store</a></li>
+                            <li><a href="/Dictionaries/Index?entityName=StorePlace">Store Place</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
