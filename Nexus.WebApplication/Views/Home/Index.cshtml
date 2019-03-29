@@ -144,13 +144,26 @@
 
 @using (Html.DevExtreme().NamedTemplate("activity_form_template_detail"))
 {
-    <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-    </ul>
+    @(Html.DevExtreme().TabPanel()
+        .ID("SubActivityTabPanel")
+        .DataSource(ds => ds
+            .Array()
+            .Data(new List<string>() { "Products", "Places", "PlaceDisplays" }.ToArray())
+        ).AnimationEnabled(false)
+        .SwipeEnabled(false)
+        .Height("50%")
+        .ItemTemplate(new TemplateName("SubActivityTabPanelTemplate"))
+        .OnSelectionChanged("subActivityTabPanelOnSelectionChanged")
+
+    )
 }
 
+@using (Html.DevExtreme().NamedTemplate("SubActivityTabPanelTemplate"))
+{
+    <div style="height: 45%">
+        <div class="dx-error-message">Error</div>
+    </div>
+}
 
 <script type="text/javascript">
 
@@ -250,6 +263,12 @@
     function marketingActivitiesReload() {
         var context = getSchedulerStore();
         context.reload();;
+    }
+
+    function subActivityTabPanelOnSelectionChanged(e) {
+        var type = "error";
+        var message = "disbled";
+        DevExpress.ui.notify(message, type, 600);
     }
 
 </script>
