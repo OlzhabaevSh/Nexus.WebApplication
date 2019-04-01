@@ -7,13 +7,13 @@ namespace Nexus_WebApplication.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddingnametoMarketingActivity : IMigrationMetadata
+    public sealed partial class addBudgetTypes : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddingnametoMarketingActivity));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(addBudgetTypes));
         
         string IMigrationMetadata.Id
         {
-            get { return "201903270421433_Adding name to MarketingActivity"; }
+            get { return "201904010349177_addBudgetTypes"; }
         }
         
         string IMigrationMetadata.Source

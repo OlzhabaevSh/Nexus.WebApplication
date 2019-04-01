@@ -1,84 +1,20 @@
-﻿@model Type
-@using Nexus_WebApplication.Models
-@using Nexus.Core.Entities
-
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        @Model.Name
-    </div>
+<div class="panel panel-default">
     <div class="panel-body">
-        @(Html.DevExtreme().DataGrid()
-            .DataSource(d => d
-                .OData()
-                .Version(4)
-                .Url("/odata/" + EntityUrlHelper.GetEntityUrlName(Model.Name))
-                .Key("Id"))
-            .RemoteOperations(true)
-            .AllowColumnReordering(true)
-            .RowAlternationEnabled(true)
-            .ShowBorders(true)
-            .Paging(p => p.PageSize(10))
-            .Pager(p => p
-                .ShowPageSizeSelector(true)
-                .AllowedPageSizes(new int[] { 10, 25, 50, 100 })
-            )
-            .SearchPanel(s => s
-                .Visible(true)
-                .HighlightCaseSensitive(true)
-            )
-            .GroupPanel(g => g.Visible(true))
-            .Grouping(g => g.AutoExpandAll(false))
-            .Editing(e => e
-                .AllowAdding(true)
-                .AllowDeleting(true)
-                .AllowUpdating(true)
-                .Mode(GridEditMode.Popup)
-                .Form(f => f
-                    .ColCount(1)))
-            .Columns(cols =>
-            {
-                var properties = Model.GetProperties()
-                    .Where(x => x.PropertyType.IsPublic && !x.GetGetMethod().IsVirtual)
-                    .ToList();
-
-                foreach (var propItem in properties)
-                {
-                    if (propItem.Name == "Id")
-                    {
-                        cols.Add()
-                            .DataField(propItem.Name)
-                            .Width(200);
-                    }
-                    else if (propItem.Name.EndsWith("Id"))
-                    {
-                        var entityName = EntityUrlHelper.GetEntityUrlName(propItem.Name.Substring(0, propItem.Name.Length - 2));
-                        cols.Add()
-                            .DataField(propItem.Name)
-                            .Lookup(l => l
-                                .DataSource(ds => ds
-                                    .OData()
-                                    .Version(4)
-                                    .Url("/odata/" + entityName)
-                                    .Key("Id")
-                                )
-                                .ValueExpr("Id")
-                                .DisplayExpr("Name")
-                            );
-                    }
-                    else
-                    {
-                        cols.Add()
-                            .DataField(propItem.Name);
-                    }
-
-                }
-
-            })
-        )
+        <a class="btn btn-primary btn-block" href="/Dictionaries/Entities?entityName=ActivityStatus">Activity Status</a>
+        <a class="btn btn-primary btn-block" href="/Dictionaries/Entities?entityName=ActivityType">Activity Status</a>
+        <a class="btn btn-primary btn-block" href="/Dictionaries/Entities?entityName=BudgetType">Budget Types</a>
+        <a class="btn btn-primary btn-block" href="/Dictionaries/Entities?entityName=MarketingActivityType">Marketing Activity Types</a>
+        <a class="btn btn-primary btn-block" href="/Dictionaries/Entities?entityName=Client">Client</a>
+        <a class="btn btn-primary btn-block" href="/Dictionaries/Entities?entityName=ProductBrand">Product Brand</a>
+        <a class="btn btn-primary btn-block" href="/Dictionaries/Entities?entityName=ProductCategory">Product Category</a>
+        <a class="btn btn-primary btn-block" href="/Dictionaries/Entities?entityName=ProductLine">Product Line</a>
+        <a class="btn btn-primary btn-block" href="/Dictionaries/Entities?entityName=ProductLink">Product Link</a>
+        <a class="btn btn-primary btn-block" href="/Dictionaries/Entities?entityName=ProductStockKeepingUnit">Product Stock Keeping Unit</a>
+        <a class="btn btn-primary btn-block" href="/Dictionaries/Entities?entityName=Store">Store</a>
+        <a class="btn btn-primary btn-block" href="/Dictionaries/Entities?entityName=StorePlace">Store Place</a>
     </div>
 </div>
-

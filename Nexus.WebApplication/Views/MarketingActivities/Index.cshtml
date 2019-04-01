@@ -1,0 +1,502 @@
+﻿@using Nexus_WebApplication.Models
+@using Nexus.Core.Entities
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Marketing Activities 
+        @(Html.DevExtreme().Button().Type(ButtonType.Default).Icon("plus").OnClick("activityCreateOnClick"))
+    </div>
+    <div class="panel-body">
+    @(Html.DevExtreme().Scheduler()
+        .ID("activityScheduler")
+        .DataSource(ds => ds
+            .OData()
+            .Version(4)
+            .Url("/odata/" + EntityUrlHelper.GetEntityUrlName("MarketingActivity"))
+            .Key("Id")
+        )
+        .Height(750)
+        .StartDateExpr("DateFrom")
+        .EndDateExpr("DateTo")
+        .TextExpr("Name")
+        .Views(new SchedulerViewType[] {
+            SchedulerViewType.Month
+        })
+        .CurrentView(SchedulerViewType.Month)
+        .FirstDayOfWeek(FirstDayOfWeek.Monday)
+        .RecurrenceEditMode(SchedulerRecurrenceEditMode.Series)
+        .Editing(e => e
+            .AllowAdding(false)
+            .AllowDeleting(false)
+            .AllowUpdating(false))
+        .Resources(res =>
+        {
+            res.Add()
+                .FieldExpr("ClientId")
+                .Label("Client")
+                .DataSource(ds => ds
+                    .OData()
+                    .Version(4)
+                    .Url("/odata/Clients")
+                    .Key("Id"))
+                .DisplayExpr("Name")
+                .ValueExpr("Id");
+
+            res.Add()
+                .FieldExpr("BudgetTypeId")
+                .Label("BudgetType")
+                .DataSource(ds => ds
+                    .OData()
+                    .Version(4)
+                    .Url("/odata/BudgetTypes")
+                    .Key("Id"))
+                .DisplayExpr("Name")
+                .ValueExpr("Id");
+
+            res.Add()
+                .FieldExpr("MarketingActivityTypeId")
+                .Label("MarketingActivityType")
+                .DataSource(ds => ds
+                    .OData()
+                    .Version(4)
+                    .Url("/odata/MarketingActivityTypes")
+                    .Key("Id"))
+                .DisplayExpr("Name")
+                .ValueExpr("Id");
+
+            res.Add()
+                .FieldExpr("ActivityStatusId")
+                .Label("ActivityStatus")
+                .DataSource(ds => ds
+                    .OData()
+                    .Version(4)
+                    .Url("/odata/ActivityStatus")
+                    .Key("Id"));
+
+            res.Add()
+                .FieldExpr("ProductCategoryId")
+                .Label("ProductCategory")
+                .DataSource(ds => ds
+                    .OData()
+                    .Version(4)
+                    .Url("/odata/ProductCategories")
+                    .Key("Id"));
+
+            res.Add()
+                .FieldExpr("ProductBrandId")
+                .Label("ProductBrand")
+                .DataSource(ds => ds
+                    .OData()
+                    .Version(4)
+                    .Url("/odata/ProductBrands")
+                    .Key("Id"));
+
+            res.Add()
+                .FieldExpr("ProductLineId")
+                .Label("ProductLine")
+                .DataSource(ds => ds
+                    .OData()
+                    .Version(4)
+                    .Url("/odata/ProductLines")
+                    .Key("Id"));
+            
+            res.Add()
+                .FieldExpr("Discount")
+                .Label("Discount");
+
+            res.Add()
+                .FieldExpr("MarginPercent")
+                .Label("MarginPercent");
+
+            res.Add()
+                .FieldExpr("PlanedSales")
+                .Label("PlanedSales");
+
+            res.Add()
+                .FieldExpr("PlanedSalesAmount")
+                .Label("PlanedSalesAmount");
+
+        })
+        .ShowAllDayPanel(false)
+        //.DropDownAppointmentTemplate(new TemplateName("dropDownAppointmentTemplate"))
+        .AppointmentTooltipTemplate(new TemplateName("dropDownAppointmentTemplate"))
+    )
+    </div>
+</div>
+
+@using (Html.DevExtreme().NamedTemplate("dropDownAppointmentTemplate"))
+{
+    @(Html.DevExtreme().Button()
+        .ID("show_button")
+        .OnClick("activitiesShow")
+        .Option("marketingActivityId", new JS("Id"))
+        .Type(ButtonType.Default)
+        .Text("Show"))
+}
+
+@(Html.DevExtreme().Popup()
+    .ID("marketing_activity_popup")
+    .ShowTitle(true)
+    .Title("Activity")
+    .Visible(false)
+    .DragEnabled(true)
+    .CloseOnOutsideClick(true)
+    .OnShowing("marketingActivityFormOnInitialized")
+    .ContentTemplate(new TemplateName("activity_form_template"))
+)
+
+@using (Html.DevExtreme().NamedTemplate("activity_form_template"))
+{
+    @(Html.DevExtreme().Form<MarketingActivity>()
+        .ID("marketing_activity_form")
+        .ScrollingEnabled(true)
+        .Items(items =>
+        {
+            items.AddGroup()
+                .ColCount(2)
+                .Items(mainItems =>
+                {
+                    mainItems.AddGroup()
+                        .ColCount(1)
+                        .Caption("Main info")
+                        .Items(gItem =>
+                        {
+                            gItem.AddSimpleFor(c => c.Id);
+                            gItem.AddSimpleFor(c => c.ClientId)
+                                .Editor(e => e
+                                    .Lookup()
+                                    .DataSource(ds => ds
+                                        .OData()
+                                        .Version(4)
+                                        .Url("/odata/Clients")
+                                        .Key("Id"))
+                                    .DisplayExpr("Name")
+                                    .ValueExpr("Id"));
+                            gItem.AddSimpleFor(c => c.Name);
+                            gItem.AddSimpleFor(c => c.DateFrom);
+                            gItem.AddSimpleFor(c => c.DateTo);
+                            gItem.AddSimpleFor(c => c.MarketingActivityTypeId)
+                                .Editor(e => e
+                                    .Lookup()
+                                    .DataSource(ds => ds
+                                        .OData()
+                                        .Version(4)
+                                        .Url("/odata/MarketingActivityTypes")
+                                        .Key("Id"))
+                                    .DisplayExpr("Name")
+                                    .ValueExpr("Id"));
+
+                            gItem.AddSimpleFor(c => c.ActivityStatusId)
+                                .Editor(e => e
+                                    .Lookup()
+                                    .DataSource(ds => ds
+                                        .OData()
+                                        .Version(4)
+                                        .Url("/odata/ActivityStatus")
+                                        .Key("Id"))
+                                    .DisplayExpr("Name")
+                                    .ValueExpr("Id"));
+                        });
+
+                    mainItems.AddGroup()
+                        .ColCount(1)
+                        .Caption("Sale info")
+                        .Items(gItems =>
+                        {
+                            gItems.AddSimpleFor(c => c.Discount);
+                            gItems.AddSimpleFor(c => c.MarginPercent);
+                            gItems.AddSimpleFor(c => c.PlanedSales);
+                            gItems.AddSimpleFor(c => c.PlanedSalesAmount);
+                        });
+
+                    mainItems.AddGroup()
+                        .ColCount(1)
+                        .Caption("Product info")
+                        .Items(gItem =>
+                        {
+                            gItem.AddSimpleFor(c => c.ProductCategoryId)
+                                .Editor(e => e
+                                    .Lookup()
+                                    .DataSource(ds => ds
+                                        .OData()
+                                        .Version(4)
+                                        .Url("/odata/ProductCategories")
+                                        .Key("Id"))
+                                    .DisplayExpr("Name")
+                                    .ValueExpr("Id"));
+
+                            gItem.AddSimpleFor(c => c.ProductBrandId)
+                                .Editor(e => e
+                                    .Lookup()
+                                    .DataSource(ds => ds
+                                        .OData()
+                                        .Version(4)
+                                        .Url("/odata/ProductBrands")
+                                        .Key("Id"))
+                                    .DisplayExpr("Name")
+                                    .ValueExpr("Id"));
+
+                            gItem.AddSimpleFor(c => c.ProductLineId)
+                                .Editor(e => e
+                                    .Lookup()
+                                    .DataSource(ds => ds
+                                        .OData()
+                                        .Version(4)
+                                        .Url("/odata/ProductLines")
+                                        .Key("Id"))
+                                    .DisplayExpr("Name")
+                                    .ValueExpr("Id"));
+                        });
+
+                });
+
+            items.AddButton()
+                .Name("activity_form_create_button")
+                .ButtonOptions(opt => opt
+                    .Text("Create")
+                    .ID("activity_form_create_button")
+                    .Icon("plus")
+                    .OnClick("activity_form_create_button_click"));
+
+            items.AddButton()
+                .ButtonOptions(opt => opt
+                    .Text("Save")
+                    .ID("activity_form_save_button")
+                    .Icon("save")
+                    .OnClick("activity_form_save_button_click"));
+
+            items.AddGroup()
+                .Template(new TemplateName("activity_form_template_detail"));
+
+        })
+    )
+}
+
+@using (Html.DevExtreme().NamedTemplate("activity_form_template_detail"))
+{
+    @(Html.DevExtreme().TabPanel()
+        .ID("SubActivityTabPanel")
+        .Height(450)
+        .DataSource(ds => ds
+            .Array()
+            .Data(new List<string>() { "Products", "Places", "PlaceDisplays" }.ToArray())
+        ).AnimationEnabled(false)
+        .SwipeEnabled(false)
+        .ItemTemplate(new TemplateName("SubActivityTabPanelTemplate"))
+        .OnSelectionChanged("subActivityTabPanelOnSelectionChanged")
+
+    )
+}
+
+@using (Html.DevExtreme().NamedTemplate("SubActivityTabPanelTemplate"))
+{
+    <div class="SubActivityTabPanelTemplateMarketingActivityProductDiv show">
+        @(Html.DevExtreme().DataGrid<MarketingActivityProduct>()
+            .Editing(e => e
+                .AllowAdding(true)
+                .AllowDeleting(true)
+                .AllowUpdating(true))
+            .DataSource(ds => ds
+                .OData()
+                .Version(4)
+                .Url("/odata/MarketingActivityProducts")
+                .Key("Id"))
+            .Columns(cols =>
+            {
+                cols.AddFor(c => c.Id);
+                cols.AddFor(c => c.MarketingActivityId);
+                cols.AddFor(c => c.ProductStockKeepingUnitId);
+            })
+        )
+    </div>
+
+    <div class="SubActivityTabPanelTemplateMarketingActivityStoreDiv hidden">
+        @(Html.DevExtreme().DataGrid<MarketingActivityStore>()
+            .Editing(e => e
+                .AllowAdding(true)
+                .AllowDeleting(true)
+                .AllowUpdating(true))
+            .DataSource(ds => ds
+                .OData()
+                .Version(4)
+                .Url("/odata/MarketingActivityStores")
+                .Key("Id"))
+            .Columns(cols =>
+            {
+                cols.AddFor(c => c.Id);
+                cols.AddFor(c => c.MarketingActivityId);
+                cols.AddFor(c => c.StoreId);
+            })
+        )
+    </div>
+
+    <div class="SubActivityTabPanelTemplateMarketingActivityStorePlaceDiv hidden">
+        @(Html.DevExtreme().DataGrid<MarketingActivityStorePlace>()
+            .Editing(e => e
+                .AllowAdding(true)
+                .AllowDeleting(true)
+                .AllowUpdating(true))
+            .DataSource(ds => ds
+                .OData()
+                .Version(4)
+                .Url("/odata/MarketingActivityStorePlaces")
+                .Key("Id"))
+            .Columns(cols =>
+            {
+                cols.AddFor(c => c.Id);
+                cols.AddFor(c => c.MarketingActivityId);
+                cols.AddFor(c => c.StorePlaceId);
+                cols.AddFor(c => c.PlanAmount);
+            })
+        )
+    </div>
+
+    
+
+}
+
+<script type="text/javascript">
+
+    function marketingActivityFormOnInitialized(e) {
+        console.log('china2', e);
+        var poput = getPoput();
+        var id = poput.option('marketingActivityId');
+
+        var btn = getCreateButton();
+        btn.option('visible', true);
+
+        var btnSave = getSaveButton();
+        btnSave.option('visible', false);
+
+        if (id > 0) {
+
+            btn.option('visible', false);
+            btnSave.option('visible', true);
+            $.get('/odata/MarketingActivities(' + id + ')', null, function (data) {
+                
+                delete data["@@odata.context"]
+
+                console.log('succ req', data);
+
+                var form = getForm();
+
+                form.option('formData', data);
+            });
+        }
+    }
+
+    function activity_form_create_button_click(e) {
+        var form = getForm();
+        var data = form.option('formData');
+
+        $.ajax('/odata/MarketingActivities', {
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            type: 'POST',
+            success: function (e) {
+                var popup = getPoput();
+                popup.option('visible', false);
+                marketingActivitiesReload();
+            }
+        });
+
+        console.log(data);
+    }
+
+    function activity_form_save_button_click(e) {
+        var form = getForm();
+        console.log(form.option('formData'));
+
+        var context = getSchedulerStore();
+        context.reload();
+
+    }
+
+    function activitiesShow(e, a, b) {
+        var button = $('#show_button').dxButton('instance');
+        var id = button.option('marketingActivityId');
+        var popup = getPoput();
+        popup.option('marketingActivityId', id);
+        popup.show();
+
+        console.log(popup.option('marketingActivityId'));
+    }
+
+    function activityCreateOnClick() {
+        console.log('china create');
+        var popup = getPoput();
+        popup.option('marketingActivityId', 0);
+        popup.show();
+
+        console.log(popup.option('marketingActivityId'));
+    }
+
+    function getForm() {
+        return $('#marketing_activity_form').dxForm('instance');
+    }
+    function getPoput() {
+        return $("#marketing_activity_popup").dxPopup("instance");
+    }
+
+    function getCreateButton() {
+        return $('#activity_form_create_button').dxButton('instance');
+    }
+
+    function getSaveButton() {
+        return $('#activity_form_save_button').dxButton('instance');
+    }
+
+    function getSchedulerStore() {
+        return $('#activityScheduler').dxScheduler('getDataSource');
+    }
+
+    function marketingActivitiesReload() {
+        var context = getSchedulerStore();
+        context.reload();;
+    }
+
+    function subActivityTabPanelOnSelectionChanged(e) {
+        //var type = "error";
+        //var message = "disbled";
+        //console.log('changed', e);
+        //DevExpress.ui.notify(message, type, 600);
+
+        var tabPanelTitle = e.addedItems[0];
+
+        console.log('tab panel value', tabPanelTitle);
+
+        //"Products", "Places", "PlaceDisplays"
+        // SubActivityTabPanelTemplateMarketingActivityProduct 
+        // SubActivityTabPanelTemplateMarketingActivityStore
+        // SubActivityTabPanelTemplateMarketingActivityStorePlace
+        
+        var grids = [ {
+                pageName: 'Products',
+                gridName: 'SubActivityTabPanelTemplateMarketingActivityProductDiv'
+            }, {
+                pageName: 'Places',
+                gridName: 'SubActivityTabPanelTemplateMarketingActivityStoreDiv'
+            }, {
+                pageName: 'PlaceDisplays',
+                gridName: 'SubActivityTabPanelTemplateMarketingActivityStorePlaceDiv'
+            }];
+
+        grids.forEach(item => {
+
+            var grid = $('.' + item.gridName);
+
+            console.log('grid option', grid[0]);
+
+            var actionAdd = tabPanelTitle === item.pageName ? "show" : "hidden";
+            var actionRemove = tabPanelTitle === item.pageName ? "hidden" : "show";
+
+            grid.removeClass(actionRemove).addClass(actionAdd);
+
+        });
+
+    }
+
+</script>

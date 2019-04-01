@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Entities\ActivityStatus.cs" />
     <Compile Include="Entities\ActivityType.cs" />
+    <Compile Include="Entities\BudgetType.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\MarketingActivity.cs" />
     <Compile Include="Entities\MarketingActivityProduct.cs" />

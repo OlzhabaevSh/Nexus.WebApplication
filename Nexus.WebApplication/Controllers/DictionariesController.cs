@@ -12,6 +12,16 @@ namespace Nexus_WebApplication.Controllers
         // GET: Dictionaries/Index
         public ActionResult Index(string entityName = "")
         {
+            if (!string.IsNullOrEmpty(entityName))
+            {
+                return Redirect("/Dictionaries/Entities?entityName=" + entityName);
+            }
+
+            return View();
+        }
+
+        public ActionResult Entities(string entityName)
+        {
             var types = typeof(NexusContext).GetProperties()
                 .Where(x => x.PropertyType.IsGenericType)
                 .SelectMany(x => x.PropertyType.GetGenericArguments())
@@ -23,5 +33,8 @@ namespace Nexus_WebApplication.Controllers
 
             return View(type);
         }
+
     }
+    
+
 }

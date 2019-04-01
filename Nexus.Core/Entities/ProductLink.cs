@@ -21,7 +21,7 @@ namespace Nexus.Core.Entities
 
         public int? ProductStockKeepingUnitId { get; set; }
         public virtual ProductStockKeepingUnit ProductStockKeepingUnit { get; set; }
-
-        public virtual ICollection<MarketingActivity> MarketingActivities { get; set; }
+        
+        //public virtual ICollection<MarketingActivity> MarketingActivities { get; set; }
     }
 }

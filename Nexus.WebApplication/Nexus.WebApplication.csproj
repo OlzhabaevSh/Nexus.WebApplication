@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Nexus_WebApplication</RootNamespace>
     <AssemblyName>Nexus_WebApplication</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -93,7 +94,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
@@ -103,6 +103,10 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -278,12 +282,16 @@
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <None Include="Scripts\_references.js" />
     <Content Include="Views\Web.config" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Dictionaries\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Dictionaries\Entities.cshtml" />
+    <Content Include="Views\MarketingActivities\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -311,16 +319,17 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DictionariesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MarketingActivitiesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201903270321474_Init.cs" />
-    <Compile Include="Migrations\201903270321474_Init.Designer.cs">
-      <DependentUpon>201903270321474_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201904010347319_init.cs" />
+    <Compile Include="Migrations\201904010347319_init.Designer.cs">
+      <DependentUpon>201904010347319_init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201903270421433_Adding name to MarketingActivity.cs" />
-    <Compile Include="Migrations\201903270421433_Adding name to MarketingActivity.Designer.cs">
-      <DependentUpon>201903270421433_Adding name to MarketingActivity.cs</DependentUpon>
+    <Compile Include="Migrations\201904010349177_addBudgetTypes.cs" />
+    <Compile Include="Migrations\201904010349177_addBudgetTypes.Designer.cs">
+      <DependentUpon>201904010349177_addBudgetTypes.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityUrlHelper.cs" />
@@ -337,11 +346,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201903270321474_Init.resx">
-      <DependentUpon>201903270321474_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201904010347319_init.resx">
+      <DependentUpon>201904010347319_init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903270421433_Adding name to MarketingActivity.resx">
-      <DependentUpon>201903270421433_Adding name to MarketingActivity.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201904010349177_addBudgetTypes.resx">
+      <DependentUpon>201904010349177_addBudgetTypes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

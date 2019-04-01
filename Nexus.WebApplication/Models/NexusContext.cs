@@ -9,6 +9,7 @@ namespace Nexus_WebApplication.Models
     {
         public virtual DbSet<ActivityStatus> ActivityStatus { get; set; }
         public virtual DbSet<ActivityType> ActivityTypes { get; set; }
+        public virtual DbSet<BudgetType> BudgetTypes { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<MarketingActivity> MarketingActivities { get; set; }
         public virtual DbSet<MarketingActivityProduct> MarketingActivityProducts { get; set; }
@@ -22,6 +23,7 @@ namespace Nexus_WebApplication.Models
         public virtual DbSet<ProductStockKeepingUnit> ProductStockKeepingUnits { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
         public virtual DbSet<StorePlace> StorePlaces { get; set; }
+
         
         public NexusContext()
             : base("name=NexusContext")

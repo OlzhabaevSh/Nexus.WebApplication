@@ -3,7 +3,7 @@ namespace Nexus_WebApplication.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Init : DbMigration
+    public partial class init : DbMigration
     {
         public override void Up()
         {
@@ -49,22 +49,45 @@ namespace Nexus_WebApplication.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        BudgetTypeId = c.Int(),
                         ClientId = c.Int(),
                         MarketingActivityTypeId = c.Int(),
+                        ActivityStatusId = c.Int(),
                         DateFrom = c.DateTime(nullable: false),
                         DateTo = c.DateTime(),
-                        ProductLinkId = c.Int(),
+                        Name = c.String(),
+                        ProductCategoryId = c.Int(),
+                        ProductBrandId = c.Int(),
+                        ProductLineId = c.Int(),
                         Discount = c.Single(nullable: false),
                         MarginPercent = c.Single(nullable: false),
+                        PlanedSales = c.Int(nullable: false),
                         PlanedSalesAmount = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ActivityStatus", t => t.ActivityStatusId)
+                .ForeignKey("dbo.BudgetTypes", t => t.BudgetTypeId)
                 .ForeignKey("dbo.Clients", t => t.ClientId)
-                .ForeignKey("dbo.ProductLinks", t => t.ProductLinkId)
+                .ForeignKey("dbo.ProductBrands", t => t.ProductBrandId)
+                .ForeignKey("dbo.ProductCategories", t => t.ProductCategoryId)
+                .ForeignKey("dbo.ProductLines", t => t.ProductLineId)
                 .ForeignKey("dbo.MarketingActivityTypes", t => t.MarketingActivityTypeId)
+                .Index(t => t.BudgetTypeId)
                 .Index(t => t.ClientId)
                 .Index(t => t.MarketingActivityTypeId)
-                .Index(t => t.ProductLinkId);
+                .Index(t => t.ActivityStatusId)
+                .Index(t => t.ProductCategoryId)
+                .Index(t => t.ProductBrandId)
+                .Index(t => t.ProductLineId);
+            
+            CreateTable(
+                "dbo.BudgetTypes",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Clients",
@@ -200,9 +223,11 @@ namespace Nexus_WebApplication.Migrations
             DropForeignKey("dbo.MarketingActivityStorePlaces", "MarketingActivityId", "dbo.MarketingActivities");
             DropForeignKey("dbo.ProductLinks", "ProductStockKeepingUnitId", "dbo.ProductStockKeepingUnits");
             DropForeignKey("dbo.ProductLinks", "ProductLineId", "dbo.ProductLines");
+            DropForeignKey("dbo.MarketingActivities", "ProductLineId", "dbo.ProductLines");
             DropForeignKey("dbo.ProductLinks", "ProductCategoryId", "dbo.ProductCategories");
+            DropForeignKey("dbo.MarketingActivities", "ProductCategoryId", "dbo.ProductCategories");
             DropForeignKey("dbo.ProductLinks", "ProductBrandId", "dbo.ProductBrands");
-            DropForeignKey("dbo.MarketingActivities", "ProductLinkId", "dbo.ProductLinks");
+            DropForeignKey("dbo.MarketingActivities", "ProductBrandId", "dbo.ProductBrands");
             DropForeignKey("dbo.MarketingActivityProducts", "ProductStockKeepingUnitId", "dbo.ProductStockKeepingUnits");
             DropForeignKey("dbo.MarketingActivityProducts", "MarketingActivityId", "dbo.MarketingActivities");
             DropForeignKey("dbo.StorePlaces", "StoreId", "dbo.Stores");
@@ -211,6 +236,8 @@ namespace Nexus_WebApplication.Migrations
             DropForeignKey("dbo.MarketingActivityStores", "MarketingActivityId", "dbo.MarketingActivities");
             DropForeignKey("dbo.Stores", "ClientId", "dbo.Clients");
             DropForeignKey("dbo.MarketingActivities", "ClientId", "dbo.Clients");
+            DropForeignKey("dbo.MarketingActivities", "BudgetTypeId", "dbo.BudgetTypes");
+            DropForeignKey("dbo.MarketingActivities", "ActivityStatusId", "dbo.ActivityStatus");
             DropForeignKey("dbo.MarketingActivityStorePlaces", "ActivityTypeId", "dbo.ActivityTypes");
             DropIndex("dbo.ProductLinks", new[] { "ProductStockKeepingUnitId" });
             DropIndex("dbo.ProductLinks", new[] { "ProductLineId" });
@@ -222,9 +249,13 @@ namespace Nexus_WebApplication.Migrations
             DropIndex("dbo.MarketingActivityStores", new[] { "StoreId" });
             DropIndex("dbo.MarketingActivityStores", new[] { "MarketingActivityId" });
             DropIndex("dbo.Stores", new[] { "ClientId" });
-            DropIndex("dbo.MarketingActivities", new[] { "ProductLinkId" });
+            DropIndex("dbo.MarketingActivities", new[] { "ProductLineId" });
+            DropIndex("dbo.MarketingActivities", new[] { "ProductBrandId" });
+            DropIndex("dbo.MarketingActivities", new[] { "ProductCategoryId" });
+            DropIndex("dbo.MarketingActivities", new[] { "ActivityStatusId" });
             DropIndex("dbo.MarketingActivities", new[] { "MarketingActivityTypeId" });
             DropIndex("dbo.MarketingActivities", new[] { "ClientId" });
+            DropIndex("dbo.MarketingActivities", new[] { "BudgetTypeId" });
             DropIndex("dbo.MarketingActivityStorePlaces", new[] { "ActivityTypeId" });
             DropIndex("dbo.MarketingActivityStorePlaces", new[] { "StorePlaceId" });
             DropIndex("dbo.MarketingActivityStorePlaces", new[] { "MarketingActivityId" });
@@ -239,6 +270,7 @@ namespace Nexus_WebApplication.Migrations
             DropTable("dbo.MarketingActivityStores");
             DropTable("dbo.Stores");
             DropTable("dbo.Clients");
+            DropTable("dbo.BudgetTypes");
             DropTable("dbo.MarketingActivities");
             DropTable("dbo.MarketingActivityStorePlaces");
             DropTable("dbo.ActivityTypes");
